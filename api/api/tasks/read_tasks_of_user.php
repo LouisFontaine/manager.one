@@ -1,5 +1,4 @@
 <?php
-
 // Headers requis
 // Accès depuis n'importe quel site ou appareil (*)
 header("Access-Control-Allow-Origin: *");
@@ -17,7 +16,7 @@ header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 include_once '../../config/db_connect.php';
-include_once '../../models/User.php';
+include_once '../../models/Task.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
@@ -25,38 +24,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $database = new Database();
     $db = $database->connect();
 
-    // Instantiate users object
-    $users = new User($db);
+    // Instantiate tasks object
+    $tasks = new Task($db);
 
-    // users query
-    $result = $users->read();
+    // Get ID
+    $tasks->user_id = isset($_GET['user_id']) ? $_GET['user_id'] : die();
+
+    // tasks query
+    $result = $tasks->read_tasks_of_user();
+
     // Get row count
     $num = $result->rowCount();
 
-    // Check if any users
+    // Check if any tasks
     if ($num > 0) {
-        // users array
-        $users_arr = array();
+        // Tasks array
+        $tasks_arr = array();
 
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
 
-            $users_item = array(
+            $tasks_item = array(
                 'id' => $id,
-                'name' => $name,
-                'email' => $email
+                'user_id' => $user_id,
+                'title' => $title,
+                'description' => $description,
+                'creation_date' => $creation_date,
+                'status' => $status
             );
 
             // Push to "data"
-            array_push($users_arr, $users_item);
+            array_push($tasks_arr, $tasks_item);
         }
 
         // Turn to JSON & output
-        echo json_encode($users_arr);
+        echo json_encode($tasks_arr);
     } else {
-        // No users
+        // No tasks
         echo json_encode(
-            array('message' => 'No users Found')
+            array('message' => 'No tasks Found')
         );
     }
 } else {

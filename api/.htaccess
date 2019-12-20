@@ -1,7 +1,9 @@
 RewriteEngine On # Activer le module Rewrite
 
-RewriteRule ^users/?$ api/users/read.php [NC,L]
-RewriteRule ^[^/]+/(\d+)$ api/users/read_single.php?id=$1
 
-RewriteRule ^tasks/?$ api/tasks/read.php [NC,L]
-RewriteRule ^[^/]+/(\d+)$ api/tasks/read.php?id=$1
+RewriteRule ^users+/(\d+)+/tasks/?$ api/tasks/read_tasks_of_user.php?user_id=$1
+RewriteRule ^users/?$ api/users/read.php [NC,L]
+RewriteRule ^users+/(\d+)$ api/users/read_single.php?id=$1
+
+RewriteRule ^tasks/?$ api/tasks/read_and_create.php [NC,L]
+RewriteRule ^tasks+/(\d+)$ api/tasks/read_single.php?id=$1

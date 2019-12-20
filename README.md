@@ -18,3 +18,11 @@ Dans le premier cas, il nous suffit de vérifier dans le fichier httpd.conf d'Ap
 Chargement du module de réécriture d'url
 LoadModule rewrite_module modules/mod_rewrite.so
 
+EndPoints :
+GET 	/tasks			// Renvoie toutes les tâches
+POST 	/tasks 		        // Ajoute une nouvelle tâche (la tâche est passé dans le body de la requette)
+GET 	/tasks/$id		// Renvoie la tâche spécifiée dans l'url
+DELETE 	/tasks/$id		// Supprime la tâche spécifiée associée à l'utilisateur spécifié
+GET 	/users			// Renvoie tous les utilisateurs
+GET 	/users/$id		// Renvoie l'utilisateur spécifié dans l'url
+GET 	/users/$id/tasks	// Renvoie toutes les taches de l'utilisateur spécifié
