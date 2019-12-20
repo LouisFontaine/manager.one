@@ -26,3 +26,12 @@ DELETE 	/tasks/$id		// Supprime la tâche spécifiée associée à l'utilisateur
 GET 	/users			// Renvoie tous les utilisateurs
 GET 	/users/$id		// Renvoie l'utilisateur spécifié dans l'url
 GET 	/users/$id/tasks	// Renvoie toutes les taches de l'utilisateur spécifié
+
+body pour le create :
+{
+"user_id":"1",
+"title":"Talk to mama",
+"description":"talk to mama about how to wash my clothes"
+,"creation_date":"2019-04-02",
+"status":"TODO"
+}

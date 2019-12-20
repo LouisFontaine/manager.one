@@ -7,7 +7,7 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
 // Méthode autorisée
-header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Methods: GET, POST");
 
 // Durée de vie de la requête
 header("Access-Control-Max-Age: 3600");
@@ -61,7 +61,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     );
   }
 } else {
-  // Mauvaise méthode, on gère l'erreur
-  http_response_code(405);
-  echo json_encode(["message" => "La méthode n'est pas autorisée"]);
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Instantiate DB & connect
+    $database = new Database();
+    $db = $database->connect();
+
+    // Instantiate task object
+    $task = new Task($db);
+
+    // Get raw posted data
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    //echo json_encode($data);
+
+    $task->user_id = $data["user_id"];
+    $task->title = $data["title"];
+    $task->description = $data["description"];
+    $task->creation_date = $data["creation_date"];
+    $task->status = $data["status"];
+
+    // Create Category
+    if ($task->create()) {
+      echo json_encode(
+        array('message' => 'task Created')
+      );
+    } else {
+      echo json_encode(
+        array('message' => 'task Not Created')
+      );
+    }
+  } else {
+    // Mauvaise méthode, on gère l'erreur
+    http_response_code(405);
+    echo json_encode(["message" => "La méthode n'est pas autorisée"]);
+  }
 }
