@@ -7,7 +7,7 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
 // Méthode autorisée
-header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Methods: GET, DELETE");
 
 // Durée de vie de la requête
 header("Access-Control-Max-Age: 3600");
@@ -45,7 +45,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // Make JSON
     print_r(json_encode($Task));
 } else {
-    // Mauvaise méthode, on gère l'erreur
-    http_response_code(405);
-    echo json_encode(["message" => "La méthode n'est pas autorisée"]);
+    if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+        // Instantiate DB & connect
+        $database = new Database();
+        $db = $database->connect();
+
+        // Instantiate blog post object
+        $task = new Task($db);
+
+        // Set ID to delete
+        $task->id = isset($_GET['id']) ? $_GET['id'] : die();
+
+        // Delete post
+        if ($task->delete()) {
+            echo json_encode(
+                array('message' => 'Task deleted')
+            );
+        } else {
+            echo json_encode(
+                array('message' => 'Task not deleted')
+            );
+        }
+    } else {
+        // Mauvaise méthode, on gère l'erreur
+        http_response_code(405);
+        echo json_encode(["message" => "La méthode n'est pas autorisée"]);
+    }
 }

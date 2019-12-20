@@ -115,5 +115,26 @@ class Task
   // Delete tasks
   public function delete()
   {
+    // Create query
+    $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+
+    // Prepare Statement
+    $stmt = $this->conn->prepare($query);
+
+    // clean data
+    $this->id = htmlspecialchars(strip_tags($this->id));
+
+    // Bind Data
+    $stmt->bindParam(':id', $this->id);
+
+    // Execute query
+    if ($stmt->execute()) {
+      return true;
+    }
+
+    // Print error if something goes wrong
+    printf("Error: ", $stmt->error);
+
+    return false;
   }
 }
