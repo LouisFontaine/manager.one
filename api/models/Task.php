@@ -1,5 +1,5 @@
 <?php
-  class Tasks {
+  class Task {
     // DB stuff
     private $conn;
     private $table = 'tasks';

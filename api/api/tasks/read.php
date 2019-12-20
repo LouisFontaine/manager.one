@@ -4,14 +4,14 @@
   header('Content-Type: application/json');
 
   include_once '../../config/db_connect.php';
-  include_once '../../models/Tasks.php';
+  include_once '../../models/Task.php';
 
    // Instantiate DB & connect
    $database = new Database();
    $db = $database->connect();
    
    // Instantiate tasks object
-   $tasks = new Tasks($db);
+   $tasks = new Task($db);
 
    // tasks query
    $result = $tasks->read();

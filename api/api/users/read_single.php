@@ -1,4 +1,4 @@
-<?php 
+<?php
 
     // Headers requis
     // Accès depuis n'importe quel site ou appareil (*)
@@ -20,51 +20,32 @@
     include_once '../../models/User.php';
 
     if($_SERVER['REQUEST_METHOD'] == 'GET'){
-        
         // Instantiate DB & connect
         $database = new Database();
         $db = $database->connect();
 
         // Instantiate users object
-        $users = new User($db);
+        $User = new User($db);
 
-        // users query
-        $result = $users->read();
-        // Get row count
-        $num = $result->rowCount();
+        // Get ID
+        $User->id = isset($_GET['id']) ? $_GET['id'] : die();
 
-        // Check if any users
-        if($num > 0) {
-        // users array
-        $users_arr = array();
+        // Get user
+        $User->read_single();
 
-        while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-            extract($row);
+        // Create array
+        $User = array(
+        'id' => $User->id,
+        'name' => $User->name,
+        'email' => $User->email
+        );
 
-            $users_item = array(
-            'id' => $id,
-            'name' => $name,
-            'email' => $email
-            );
-
-            // Push to "data"
-            array_push($users_arr, $users_item);
-        }
-
-        // Turn to JSON & output
-        echo json_encode($users_arr);
-
-        } else {
-            // No users
-            echo json_encode(
-                array('message' => 'No users Found')
-            );
-        }
-    }else{
+        // Make JSON
+        print_r(json_encode($User));
+    }
+    else{
         // Mauvaise méthode, on gère l'erreur
         http_response_code(405);
         echo json_encode(["message" => "La méthode n'est pas autorisée"]);
     }
-
-
-?>
+  ?>
