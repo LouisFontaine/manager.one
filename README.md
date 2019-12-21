@@ -11,7 +11,7 @@ In order to run this project you will have to install [Xampp](https://www.apache
 * First you need to clone this project in "\xampp\htdocs"
 * Then you need to activate rewrite mode in Apache, to do that go to the httpd.conf file of Apache and uncomment the line "LoadModule rewrite_module modules/mod_rewrite.so"
 * Then you have to go to your phpMyAdmin (usualy at http://localhost/phpmyadmin/index.php), open SQL console and execute the script in "/apiPHP/database.sql"
-* Last, open the file db_connect.php located in "/apiPhp/config/" and change the different DB parmaeters with your informations
+* Last, open the file [db_connect.php](db_connect.php) located in "/apiPhp/config/" and change the different DB parmaeters with your informations
 
 
 EndPoints :
