@@ -1,22 +1,18 @@
-# manager.one
+# Manager.one
 
-## First you need to install Xampp
-It is used to manage the database in order to store our database
+Manager.one is a project carried out during a technical test in order to integrate the development teams of manager.one
 
-## Execute database.sql on PhpMyAdmin to create the database
+### Getting Started
 
+In order to run this project you will have to install [Xampp](https://www.apachefriends.org/fr/index.html)
 
-Mise en place du mode Rewrite
-Pour mettre en place ce système, votre serveur web (d'un point de vue matériel) doit tout d'abord être équipé du logiciel Apache. Apache est aujourd'hui devenu le processus serveur web le plus utilisé. Il est simple a mettre en place et il est gratuit. C'est d'ailleurs pourquoi on le retrouve dans les applications telles que EasyPHP, WAMP Server, MAMP, MovAMP, XAMP...
+### Installing
 
-Nous devons tout d'abord commencer par activer le mod_rewrite d'Apache. Deux cas de figure s'offrent à nous :
+* First you need to clone this project in "\xampp\htdocs"
+* Then you need to activate rewrite mode in Apache, to do that go to the httpd.conf file of Apache and uncomment the line "LoadModule rewrite_module modules/mod_rewrite.so"
+* Then you have to go to your phpMyAdmin (usualy at http://localhost/phpmyadmin/index.php), open SQL console and execute the script in "/apiPHP/database.sql"
+* Last, open the file db_connect.php located in "/apiPhp/config/" and change the different DB parmaeters with your informations
 
-Nous avons la main mise totale sur notre serveur (serveur dédié par exemple).
-Nous dépendons d'un prestataire de services pour l'hébergement qui nous interdit l'accès à la configuration de ses serveurs (hébergement mutualisé).
-Dans le premier cas, il nous suffit de vérifier dans le fichier httpd.conf d'Apache que le mod_rewrite est bien actif. Dans le cas contraire, nous devrons juste décommenter la ligne. La ligne en question est la suivante :
-
-Chargement du module de réécriture d'url
-LoadModule rewrite_module modules/mod_rewrite.so
 
 EndPoints :
 GET 	/tasks			// Renvoie toutes les tâches
