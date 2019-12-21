@@ -1,6 +1,6 @@
 # Manager.one
 
-Manager.one is a project carried out during a technical test in order to integrate the development teams of manager.one
+Manager.one is a project carried out during a technical test in order to integrate the development team of manager.one
 
 ### Getting Started
 
