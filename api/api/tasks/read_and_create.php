@@ -1,18 +1,19 @@
 <?php
-// Headers requis
-// Accès depuis n'importe quel site ou appareil (*)
+// Headers required
+
+// Access from any site or device (*)
 header("Access-Control-Allow-Origin: *");
 
-// Format des données envoyées
+// Format of the data sent
 header("Content-Type: application/json; charset=UTF-8");
 
-// Méthode autorisée
+// Autorized methods
 header("Access-Control-Allow-Methods: GET, POST");
 
-// Durée de vie de la requête
+// Timelife of a request
 header("Access-Control-Max-Age: 3600");
 
-// Entêtes autorisées
+// Authorized headers
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 include_once '../../config/db_connect.php';
@@ -91,8 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       );
     }
   } else {
-    // Mauvaise méthode, on gère l'erreur
+    // Wrong method, we handle the error
     http_response_code(405);
-    echo json_encode(["message" => "La méthode n'est pas autorisée"]);
+    echo json_encode(["message" => "Method not allowed"]);
   }
 }

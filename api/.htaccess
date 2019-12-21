@@ -1,5 +1,5 @@
+#Endpoints
 RewriteEngine On # Activer le module Rewrite
-
 
 RewriteRule ^users+/(\d+)+/tasks/?$ api/tasks/read_all_tasks_of_user.php?user_id=$1
 RewriteRule ^users/?$ api/users/read.php [NC,L]
