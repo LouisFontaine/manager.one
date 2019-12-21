@@ -12,6 +12,14 @@ In order to run this project you will have to install [Xampp](https://www.apache
 * Then you need to activate rewrite mode in Apache, to do that go to the httpd.conf file of Apache and uncomment the line "LoadModule rewrite_module modules/mod_rewrite.so"
 * Then you have to go to your phpMyAdmin (usualy at http://localhost/phpmyadmin/index.php), open SQL console and execute the script in "/apiPHP/database.sql"
 * Last, open the file [db_connect.php](https://github.com/LouisFontaine/manager.one/blob/master/apiPhp/database.sql) located in "/apiPhp/config/" and change the different DB parmaeters with your informations
+```
+  // DB Params
+	private $host = 'localhost';
+	private $db_name = 'manageronedatabase';
+	private $username = 'root';
+	private $password = '';
+	private $conn;
+```
 
 
 EndPoints :
