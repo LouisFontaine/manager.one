@@ -21,20 +21,32 @@ private $password = '';
 ```
 
 
-EndPoints :
-GET 	/tasks			// Renvoie toutes les tâches
-POST 	/tasks 		        // Ajoute une nouvelle tâche (la tâche est passé dans le body de la requette)
-GET 	/tasks/$id		// Renvoie la tâche spécifiée dans l'url
-DELETE 	/tasks/$id		// Supprime la tâche spécifiée associée à l'utilisateur spécifié
-GET 	/users			// Renvoie tous les utilisateurs
-GET 	/users/$id		// Renvoie l'utilisateur spécifié dans l'url
-GET 	/users/$id/tasks	// Renvoie toutes les taches de l'utilisateur spécifié
+### API EndPoints and how to use
 
-body pour le create :
+GET 	/tasks			    // Return all tasks
+POST 	/tasks 		        // add a new task (task is parse in the body of the request)
+GET 	/tasks/$id		    // Return the task with the specified ID
+DELETE 	/tasks/$id		    // Delete the specified task
+GET 	/users			    // Return all users
+GET 	/users/$id		    // Return the user specified
+GET 	/users/$id/tasks	// Return all tasks of the specified user
+
+Example :
+```
+GET     http://localhost/manager.one/apiPhp/users
+GET     http://localhost/manager.one/apiPhp/users/1
+GET     http://localhost/manager.one/apiPhp/users/1/tasks
+GET     http://localhost/manager.one/apiPhp/tasks
+GET     http://localhost/manager.one/apiPhp/tasks/1
+DELETE  http://localhost/manager.one/apiPhp/tasks/1
+POST    http://localhost/manager.one/apiPhp/tasks
+```
+
+Body of the post request :
 {
-"user_id":"1",
-"title":"Talk to mama",
-"description":"talk to mama about how to wash my clothes"
-,"creation_date":"2019-04-02",
-"status":"TODO"
+    "user_id":"1",
+    "title":"Talk to mama",
+    "description":"talk to mama about how to wash my clothes",
+    "creation_date":"2019-04-02",
+    "status":"TODO"
 }
