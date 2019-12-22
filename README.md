@@ -43,7 +43,7 @@ GET /users
 GET /users/$id		    
 // Return the user specified
 
-GET /users/$id/tasks	
+GET /users/$id/tasks
 // Return all tasks of the specified user
 
 DELETE /user/$id
