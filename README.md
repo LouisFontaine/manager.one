@@ -35,6 +35,7 @@ Example :
 ```
 GET     http://localhost/manager.one/apiPhp/users
 GET     http://localhost/manager.one/apiPhp/users/1
+DELETE  http://localhost/manager.one/apiPhp/users/1
 GET     http://localhost/manager.one/apiPhp/users/1/tasks
 GET     http://localhost/manager.one/apiPhp/tasks
 GET     http://localhost/manager.one/apiPhp/tasks/1

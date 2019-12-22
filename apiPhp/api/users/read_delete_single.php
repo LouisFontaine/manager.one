@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         // Set ID to delete
         $user->id = isset($_GET['id']) ? $_GET['id'] : die();
 
-        // Delete User
+        // Delete user
         if ($user->delete()) {
             echo json_encode(
                 array('message' => 'User deleted')

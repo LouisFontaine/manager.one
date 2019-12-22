@@ -1,9 +1,15 @@
 #Endpoints
 RewriteEngine On # Activer le module Rewrite
 
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+</IfModule>
+
+
 RewriteRule ^users+/(\d+)+/tasks/?$ api/tasks/read_all_tasks_of_user.php?user_id=$1
 RewriteRule ^users/?$ api/users/read.php [NC,L]
 RewriteRule ^users+/(\d+)$ api/users/read_delete_single.php?id=$1
 
 RewriteRule ^tasks/?$ api/tasks/read_and_create.php [NC,L]
 RewriteRule ^tasks+/(\d+)$ api/tasks/read_delete_single.php?id=$1
+

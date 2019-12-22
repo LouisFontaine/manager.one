@@ -19,7 +19,12 @@ function loadDoc() {
 
 function deleteClick(UserId)
 {
+    console.log("http://localhost/manager.one/apiPhp/users/" + UserId)
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "http://localhost/manager.one/apiPhp/users", true);
+    
+    xhttp.open("DELETE", "http://localhost/manager.one/apiPhp/users" + "/" + UserId, true);
+    xhttp.setRequestHeader('Content-Type', 'application/json');
+    xhttp.setRequestHeader('Accept', '*/*'); // accept all
+    xhttp.withCredentials = false;
     xhttp.send();
 }
