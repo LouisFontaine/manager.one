@@ -34,6 +34,7 @@ GET 	/users/$id/tasks	// Return all tasks of the specified user
 Example :
 ```
 GET     http://localhost/manager.one/apiPhp/users
+POST    http://localhost/manager.one/apiPhp/users
 GET     http://localhost/manager.one/apiPhp/users/1
 DELETE  http://localhost/manager.one/apiPhp/users/1
 GET     http://localhost/manager.one/apiPhp/users/1/tasks
@@ -42,8 +43,13 @@ GET     http://localhost/manager.one/apiPhp/tasks/1
 DELETE  http://localhost/manager.one/apiPhp/tasks/1
 POST    http://localhost/manager.one/apiPhp/tasks
 ```
+Body of the post request of a user :
+{
+    "name":"Louis",
+    "email":"louis.fontaine@efrei.net"
+}
 
-Body of the post request :
+Body of the post request of a task :
 {
     "user_id":"1",
     "title":"Talk to mama",

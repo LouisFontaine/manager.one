@@ -9,7 +9,7 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
 // Autorized methods
-header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Methods: GET, POST");
 
 // Timelife of a request
 header("Access-Control-Max-Age: 3600");
@@ -61,7 +61,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         );
     }
 } else {
-    // Wrong method, we handle the error
-    http_response_code(405);
-    echo json_encode(["message" => "Method not allowed"]);
-}
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      // Instantiate DB & connect
+      $database = new Database();
+      $db = $database->connect();
+  
+      // Instantiate task object
+      $user = new User($db);
+  
+      // Get raw posted data
+      $data = json_decode(file_get_contents("php://input"), true);
+  
+      //echo json_encode($data);
+  
+      $user->name = $data["name"];
+      $user->email = $data["email"];
+  
+      // Create user
+      if ($user->create()) {
+        echo json_encode(
+          array('message' => 'user Created')
+        );
+      } else {
+        echo json_encode(
+          array('message' => 'user Not Created')
+        );
+      }
+    } else {
+      // Wrong method, we handle the error
+      http_response_code(405);
+      echo json_encode(["message" => "Method not allowed"]);
+    }
+  }

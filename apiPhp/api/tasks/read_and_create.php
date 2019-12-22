@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $task->creation_date = $data["creation_date"];
     $task->status = $data["status"];
 
-    // Create Category
+    // Create task
     if ($task->create()) {
       echo json_encode(
         array('message' => 'task Created')

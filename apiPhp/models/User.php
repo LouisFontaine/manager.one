@@ -54,6 +54,34 @@ class User
     $this->email = $row['email'];
   }
 
+  // Create user
+  public function create()
+  {
+    // Create query
+    $query = 'INSERT INTO ' . $this->table . ' SET name = :name, email = :email';
+
+    // Prepare statement
+    $stmt = $this->conn->prepare($query);
+
+    // Clean data
+    $this->name = htmlspecialchars(strip_tags($this->name));
+    $this->email = strip_tags($this->email);
+
+    // Bind data
+    $stmt->bindParam(':name', $this->name);
+    $stmt->bindParam(':email', $this->email);
+
+    // Execute query
+    if ($stmt->execute()) {
+      return true;
+    }
+
+    // Print error if something goes wrong
+    printf("Error: %s.\n", $stmt->error);
+
+    return false;
+  }
+
   // Delete user
   public function delete()
   {
