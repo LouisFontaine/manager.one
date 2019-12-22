@@ -1,6 +1,6 @@
 $(document).ready(loadUsers())
 
-// Used to loas the list of users on the page
+// Used to load the list of users on the page
 function loadUsers() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
