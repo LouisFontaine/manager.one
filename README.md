@@ -83,7 +83,7 @@ Body of the post request of a task :
 
 The WEB application is developed with HTML, CSS, Javascript and Ajax.
 
-You can acces to the web application by coing to this link : http://localhost/manager.one/front/users.html
+You can acces to the web application by coing to this link : http://localhost/manager.one/front/HTML/users.html
 On this page, you can :
 * See the differents users with their informations
 * Add a new user (by cliking on "Create" button)

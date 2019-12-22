@@ -49,5 +49,5 @@ function createUser() {
 
 // Change the page to the user's task page
 function goToTask(UserId) {
-    document.location.href = "http://localhost/manager.one/front/userTasks.html?user_id=" + UserId;
+    document.location.href = "http://localhost/manager.one/front/HTML/userTasks.html?user_id=" + UserId;
 }

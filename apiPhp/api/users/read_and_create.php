@@ -72,8 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       // Get raw posted data
       $data = json_decode(file_get_contents("php://input"), true);
   
-      //echo json_encode($data);
-  
       $user->name = $data["name"];
       $user->email = $data["email"];
   
