@@ -25,31 +25,31 @@ private $password = '';
 
 The API is developed with PHP and SQL
 
-**GET /tasks			    
+**GET /tasks**			    
 // Return all tasks
 
-**POST /tasks 		        
+**POST /tasks** 		        
 // Add a new task (task is parse in the body of the request)
 
-**GET /tasks/$id		    
+**GET /tasks/$id**		    
 // Return the task with the specified ID
 
-**DELETE /tasks/$id		    
+**DELETE /tasks/$id**		    
 // Delete the specified task
 
-**GET /users			    
+**GET /users**			    
 // Return all users
 
-**GET /users/$id		    
+**GET /users/$id**		    
 // Return the user specified
 
-**GET /users/$id/tasks
+**GET /users/$id/tasks**
 // Return all tasks of the specified user
 
-**DELETE /user/$id
+**DELETE /user/$id**
 // Delete the specified user
 
-**POST /tasks
+**POST /tasks**
 // Add a new user (user is parse in the body of the request)
 
 Example :
