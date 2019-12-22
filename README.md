@@ -23,6 +23,8 @@ private $password = '';
 
 ### API EndPoints and how to use
 
+The API is developed with PHP and SQL
+
 GET     /tasks			    
 // Return all tasks
 
@@ -70,3 +72,19 @@ Body of the post request of a task :
     "creation_date":"2019-04-02",
     "status":"TODO"
 }
+
+### Front (WEB application)
+
+The WEB application is developed with HTML, CSS, Javascript and Ajax.
+
+You can acces to the web application by coing to this link : http://localhost/manager.one/front/users.html
+On this page, you can :
+* See the differents users with their informations
+* Add a new user (by cliking on "Create" button)
+* Delete a user (by cliking on "Delete" button)
+* See the different ttasks of a user (by cliking on "Tasks" button)
+
+When you click on the "Tasks" button, you are redirected to a page presenting all the tasks of the selected user, on this page you can :
+* Go back to the users list (by cliking on "Go back to user list" button)
+* Add a new task (by cliking on "Create" button)
+* Delete a task (by cliking on "Delete" button)
