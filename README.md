@@ -44,12 +44,15 @@ GET /users/$id
 // Return the user specified
 
 GET /users/$id/tasks
+
 // Return all tasks of the specified user
 
 DELETE /user/$id
+
 // Delete the specified user
 
 POST /tasks
+
 // Add a new user (user is parse in the body of the request)
 
 Example :
