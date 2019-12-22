@@ -25,7 +25,11 @@ CREATE TABLE `tasks` (
   `description` varchar(300) NOT NULL,
   `creation_date` date NOT NULL,
   `status` ENUM ('TODO', 'DONE') NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  CONSTRAINT fk_user_id
+        FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
 );
 
 --
