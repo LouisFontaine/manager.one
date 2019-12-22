@@ -83,10 +83,12 @@ On this page, you can :
 * Add a new user (by cliking on "Create" button)
 * Delete a user (by cliking on "Delete" button)
 * See the different ttasks of a user (by cliking on "Tasks" button)
+
 See screen [UsersAdministrationScreen.PNG](https://github.com/LouisFontaine/manager.one/blob/master/UsersAdministrationScreen.PNG)
 
 When you click on the "Tasks" button, you are redirected to a page presenting all the tasks of the selected user, on this page you can :
 * Go back to the users list (by cliking on "Go back to user list" button)
 * Add a new task (by cliking on "Create" button)
 * Delete a task (by cliking on "Delete" button)
+
 See screen [TasksAdministrationScreen.PNG](https://github.com/LouisFontaine/manager.one/blob/master/TasksAdministrationScreen.PNG)
