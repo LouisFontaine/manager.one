@@ -23,19 +23,26 @@ private $password = '';
 
 ### API EndPoints and how to use
 
-GET     /tasks			    // Return all tasks
+GET     /tasks			    
+// Return all tasks
 
-POST    /tasks 		        // add a new task (task is parse in the body of the request)
+POST    /tasks 		        
+// add a new task (task is parse in the body of the request)
 
-GET     /tasks/$id		    // Return the task with the specified ID
+GET     /tasks/$id		    
+// Return the task with the specified ID
 
-DELETE  /tasks/$id		    // Delete the specified task
+DELETE  /tasks/$id		    
+// Delete the specified task
 
-GET     /users			    // Return all users
+GET     /users			    
+// Return all users
 
-GET     /users/$id		    // Return the user specified
+GET     /users/$id		    
+// Return the user specified
 
-GET     /users/$id/tasks	// Return all tasks of the specified user
+GET     /users/$id/tasks	
+// Return all tasks of the specified user
 
 Example :
 ```
