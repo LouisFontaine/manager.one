@@ -51,13 +51,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $database = new Database();
         $db = $database->connect();
 
-        // Instantiate blog post object
+        // Instantiate task object
         $task = new Task($db);
 
         // Set ID to delete
         $task->id = isset($_GET['id']) ? $_GET['id'] : die();
 
-        // Delete post
+        // Delete task
         if ($task->delete()) {
             echo json_encode(
                 array('message' => 'Task deleted')

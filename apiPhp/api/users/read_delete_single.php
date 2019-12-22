@@ -9,7 +9,7 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
 // Autorized methods
-header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Methods: GET, DELETE");
 
 // Timelife of a request
 header("Access-Control-Max-Age: 3600");
@@ -44,7 +44,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // Make JSON
     print_r(json_encode($User));
 } else {
-    // Wrong method, we handle the error
-    http_response_code(405);
-    echo json_encode(["message" => "Method not allowed"]);
+    if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+        // Instantiate DB & connect
+        $database = new Database();
+        $db = $database->connect();
+
+        // Instantiate user
+        $user = new User($db);
+
+        // Set ID to delete
+        $user->id = isset($_GET['id']) ? $_GET['id'] : die();
+
+        // Delete User
+        if ($user->delete()) {
+            echo json_encode(
+                array('message' => 'User deleted')
+            );
+        } else {
+            echo json_encode(
+                array('message' => 'User not deleted')
+            );
+        }
+    } else {
+        // Wrong method, we handle the error
+        http_response_code(405);
+        echo json_encode(["message" => "Method not allowed"]);
+    }
 }

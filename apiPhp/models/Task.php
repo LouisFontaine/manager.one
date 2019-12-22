@@ -5,7 +5,7 @@ class Task
   private $conn;
   private $table = 'tasks';
 
-  // Post Properties
+  // Task Properties
   public $id;
   public $user_id;
   public $title;
