@@ -1,110 +1,70 @@
 <?php
 class User
 {
-  // DB stuff
-  private $conn;
-  private $table = 'users';
-
   // Post Properties
-  public $id;
-  public $name;
-  public $email;
+  public $_id;
+  public $_name;
+  public $_email;
 
-  // Constructor with DB
-  public function __construct($db)
+  public function __construct(array $data)
   {
-    $this->conn = $db;
+    $this->hydrate($data);
   }
 
-  // Get users
-  public function read()
+  // Hydrate function
+  public function hydrate(array $data)
   {
-    // Create query
-    $query = 'SELECT * FROM ' . $this->table;
+    foreach ($data as $key => $value) {
+      // On récupère le nom du setter correspondant à l'attribut.
+      $method = 'set_' . ucfirst($key);
 
-    // Prepare statement
-    $stmt = $this->conn->prepare($query);
-
-    // Execute query
-    $stmt->execute();
-
-    return $stmt;
-  }
-
-  // Get Single users
-  public function read_single()
-  {
-    // Create query
-    $query = 'SELECT * FROM ' . $this->table . ' WHERE id = ?';
-
-    //Prepare statement
-    $stmt = $this->conn->prepare($query);
-
-    // Bind ID
-    $stmt->bindParam(1, $this->id);
-
-    // Execute query
-    $stmt->execute();
-
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    // set properties
-    $this->id = $row['id'];
-    $this->name = $row['name'];
-    $this->email = $row['email'];
-  }
-
-  // Create user
-  public function create()
-  {
-    // Create query
-    $query = 'INSERT INTO ' . $this->table . ' SET name = :name, email = :email';
-
-    // Prepare statement
-    $stmt = $this->conn->prepare($query);
-
-    // Clean data
-    $this->name = htmlspecialchars(strip_tags($this->name));
-    $this->email = strip_tags($this->email);
-
-    // Bind data
-    $stmt->bindParam(':name', $this->name);
-    $stmt->bindParam(':email', $this->email);
-
-    // Execute query
-    if ($stmt->execute()) {
-      return true;
+      // Si le setter correspondant existe.
+      if (method_exists($this, $method)) {
+        // On appelle le setter.
+        $this->$method($value);
+      }
     }
-
-    // Print error if something goes wrong
-    printf("Error: %s.\n", $stmt->error);
-
-    return false;
   }
 
-  // Delete user
-  public function delete()
+  public function to_array()
   {
-    // Create query
-    $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+    $task_array = array(
+      'id' => $this->_id,
+      'name' => $this->_name,
+      'email' => $this->_email
+    );
+    return $task_array;
+  }
 
-    // Prepare Statement
-    $stmt = $this->conn->prepare($query);
+  // GETTERS
+  public function id()
+  {
+    return $this->_id;
+  }
+  public function name()
+  {
+    return $this->_name;
+  }
+  public function email()
+  {
+    return $this->_email;
+  }
 
-    // clean data
-    $this->id = htmlspecialchars(strip_tags($this->id));
-
-    // Bind Data
-    $stmt->bindParam(':id', $this->id);
-
-    // Execute query
-    if ($stmt->execute()) {
-      return true;
+  // SETERS
+  public function set_id($id)
+  {
+    $this->_id = (int) $id;
+  }
+  public function set_name($name)
+  {
+    if (is_string($name)) {
+      $this->_name = $name;
     }
-
-    // Print error if something goes wrong
-    printf("Error: ", $stmt->error);
-
-    return false;
+  }
+  public function set_email($email)
+  {
+    if (is_string($email)) {
+      $this->_email = $email;
+    }
   }
 }

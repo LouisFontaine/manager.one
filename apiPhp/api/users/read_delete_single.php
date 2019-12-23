@@ -19,50 +19,44 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 include_once '../../config/db_connect.php';
 include_once '../../models/User.php';
+include_once '../../controller/UserManager.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // Instantiate DB & connect
     $database = new Database();
     $db = $database->connect();
 
-    // Instantiate users object
-    $User = new User($db);
+    // Instantiate tasks object
+    $userManager = new UserManager($db);
 
     // Get ID
-    $User->id = isset($_GET['id']) ? $_GET['id'] : die();
+    $id = isset($_GET['id']) ? $_GET['id'] : die();
 
-    // Get user
-    $User->read_single();
-
-    // Create array
-    $User = array(
-        'id' => $User->id,
-        'name' => $User->name,
-        'email' => $User->email
-    );
+    // Get Task
+    $user = $userManager->read_single($id);
 
     // Make JSON
-    print_r(json_encode($User));
+    echo (json_encode($user->to_array()));
 } else {
     if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
         // Instantiate DB & connect
         $database = new Database();
         $db = $database->connect();
 
-        // Instantiate user
-        $user = new User($db);
+        // Instantiate tasks object
+        $userManager = new UserManager($db);
 
-        // Set ID to delete
-        $user->id = isset($_GET['id']) ? $_GET['id'] : die();
+        // Get ID
+        $id = isset($_GET['id']) ? $_GET['id'] : die();
 
-        // Delete user
-        if ($user->delete()) {
+        // Delete task
+        if ($userManager->delete($id)) {
             echo json_encode(
-                array('message' => 'User deleted')
+                array('message' => 'Task deleted')
             );
         } else {
             echo json_encode(
-                array('message' => 'User not deleted')
+                array('message' => 'Task not deleted')
             );
         }
     } else {

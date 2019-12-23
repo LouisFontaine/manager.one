@@ -1,140 +1,105 @@
 <?php
 class Task
 {
-  // DB stuff
-  private $conn;
-  private $table = 'tasks';
-
   // Task Properties
-  public $id;
-  public $user_id;
-  public $title;
-  public $description;
-  public $creation_date;
-  public $status;
+  private $_id;
+  private $_user_id;
+  private $_title;
+  private $_description;
+  private $_creation_date;
+  private $_status;
 
-  // Constructor with DB
-  public function __construct($db)
+  public function __construct(array $data)
   {
-    $this->conn = $db;
+    $this->hydrate($data);
   }
 
-  // Get tasks
-  public function read()
+  // Hydrate function
+  public function hydrate(array $data)
   {
-    // Create query
-    $query = 'SELECT * FROM ' . $this->table;
+    foreach ($data as $key => $value) {
+      // On récupère le nom du setter correspondant à l'attribut.
+      $method = 'set_' . ucfirst($key);
 
-    // Prepare statement
-    $stmt = $this->conn->prepare($query);
-
-    // Execute query
-    $stmt->execute();
-
-    return $stmt;
-  }
-
-  // Get Single tasks
-  public function read_single()
-  {
-    // Create query
-    $query = 'SELECT * FROM ' . $this->table . ' WHERE id = ?';
-
-    //Prepare statement
-    $stmt = $this->conn->prepare($query);
-
-    // Bind ID
-    $stmt->bindParam(1, $this->id);
-
-    // Execute query
-    $stmt->execute();
-
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    // set properties
-    $this->id = $row['id'];
-    $this->user_id = $row['user_id'];
-    $this->title = $row['title'];
-    $this->description = $row['description'];
-    $this->creation_date = $row['creation_date'];
-    $this->status = $row['status'];
-  }
-
-  // Get all tasks of a userID
-  public function read_tasks_of_user()
-  {
-    // Create query
-    $query = 'SELECT * FROM ' . $this->table . ' WHERE user_id = ?';
-
-    //Prepare statement
-    $stmt = $this->conn->prepare($query);
-
-    // Bind ID
-    $stmt->bindParam(1, $this->user_id);
-
-    // Execute query
-    $stmt->execute();
-
-    return $stmt;
-  }
-
-  // Create tasks
-  public function create()
-  {
-    // Create query
-    $query = 'INSERT INTO ' . $this->table . ' SET user_id = :user_id, title = :title, description = :description, creation_date = :creation_date, status =:status';
-
-    // Prepare statement
-    $stmt = $this->conn->prepare($query);
-
-    // Clean data
-    $this->user_id = htmlspecialchars(strip_tags($this->user_id));
-    $this->title = htmlspecialchars(strip_tags($this->title));
-    $this->description = htmlspecialchars(strip_tags($this->description));
-    $this->creation_date = htmlspecialchars(strip_tags($this->creation_date));
-    $this->status = htmlspecialchars(strip_tags($this->status));
-
-    // Bind data
-    $stmt->bindParam(':user_id', $this->user_id);
-    $stmt->bindParam(':title', $this->title);
-    $stmt->bindParam(':description', $this->description);
-    $stmt->bindParam(':creation_date', $this->creation_date);
-    $stmt->bindParam(':status', $this->status);
-
-    // Execute query
-    if ($stmt->execute()) {
-      return true;
+      // Si le setter correspondant existe.
+      if (method_exists($this, $method)) {
+        // On appelle le setter.
+        $this->$method($value);
+      }
     }
-
-    // Print error if something goes wrong
-    printf("Error: %s.\n", $stmt->error);
-
-    return false;
   }
 
-  // Delete tasks
-  public function delete()
+  public function to_array()
   {
-    // Create query
-    $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+    $task_array = array(
+      'id' => $this->_id,
+      'user_id' => $this->_user_id,
+      'title' => $this->_title,
+      'description' => $this->_description,
+      'creation_date' => $this->_creation_date,
+      'status' => $this->_status
+    );
+    return $task_array;
+  }
 
-    // Prepare Statement
-    $stmt = $this->conn->prepare($query);
+  // GETTERS
+  public function id()
+  {
+    return $this->_id;
+  }
+  public function user_id()
+  {
+    return $this->_user_id;
+  }
+  public function title()
+  {
+    return $this->_title;
+  }
+  public function description()
+  {
+    return $this->_description;
+  }
+  public function creation_date()
+  {
+    return $this->_creation_date;
+  }
+  public function status()
+  {
+    return $this->_status;
+  }
 
-    // clean data
-    $this->id = htmlspecialchars(strip_tags($this->id));
+  // SETERS
+  public function set_id($id)
+  {
+    $this->_id = (int) $id;
+  }
 
-    // Bind Data
-    $stmt->bindParam(':id', $this->id);
+  public function set_user_id($user_id)
+  {
+    $this->_user_id = (int) $user_id;
+  }
 
-    // Execute query
-    if ($stmt->execute()) {
-      return true;
+  public function set_title($title)
+  {
+    if (is_string($title)) {
+      $this->_title = $title;
     }
+  }
 
-    // Print error if something goes wrong
-    printf("Error: ", $stmt->error);
+  public function set_description($description)
+  {
+    if (is_string($description)) {
+      $this->_description = $description;
+    }
+  }
 
-    return false;
+  public function set_creation_date($creation_date)
+  {
+    $this->_creation_date = $creation_date;
+  }
+
+  public function set_status($status)
+  {
+    $this->_status = $status;
   }
 }

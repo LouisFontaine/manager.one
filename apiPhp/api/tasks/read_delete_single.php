@@ -18,47 +18,38 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 include_once '../../config/db_connect.php';
 include_once '../../models/Task.php';
+include_once '../../controller/TaskManager.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // Instantiate DB & connect
     $database = new Database();
     $db = $database->connect();
 
-    // Instantiate Task object
-    $Task = new Task($db);
+    // Instantiate tasks object
+    $taskManager = new TaskManager($db);
 
     // Get ID
-    $Task->id = isset($_GET['id']) ? $_GET['id'] : die();
+    $id = isset($_GET['id']) ? $_GET['id'] : die();
 
     // Get Task
-    $Task->read_single();
-
-    // Create array
-    $Task = array(
-        'id' => $Task->id,
-        'user_id' => $Task->user_id,
-        'title' => $Task->title,
-        'description' => $Task->description,
-        'creation_date' => $Task->creation_date,
-        'status' => $Task->status
-    );
+    $task = $taskManager->read_single($id);
 
     // Make JSON
-    print_r(json_encode($Task));
+    echo (json_encode($task->to_array()));
 } else {
     if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
         // Instantiate DB & connect
         $database = new Database();
         $db = $database->connect();
 
-        // Instantiate task object
-        $task = new Task($db);
+        // Instantiate tasks object
+        $taskManager = new TaskManager($db);
 
-        // Set ID to delete
-        $task->id = isset($_GET['id']) ? $_GET['id'] : die();
+        // Get ID
+        $id = isset($_GET['id']) ? $_GET['id'] : die();
 
         // Delete task
-        if ($task->delete()) {
+        if ($taskManager->delete($id)) {
             echo json_encode(
                 array('message' => 'Task deleted')
             );
