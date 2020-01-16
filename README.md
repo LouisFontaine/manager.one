@@ -2,6 +2,11 @@
 
 Manager.one is a project carried out during a technical test in order to integrate the development team of manager.one
 
+### Update V2
+
+Creation d'un classe router
+Création de routes
+
 ### Getting Started
 
 In order to run this project you will have to install [Xampp](https://www.apachefriends.org/fr/index.html)
