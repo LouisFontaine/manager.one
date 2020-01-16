@@ -4,8 +4,10 @@ Manager.one is a project carried out during a technical test in order to integra
 
 ### Update V2
 
-Creation d'un classe router
-Création de routes
+Creation of Rooter class
+Creation of roots file which store all the routes
+New implementation of response to API call in [tasks.php](https://github.com/LouisFontaine/manager.one/blob/master/apiPhp/api/tasks.php and [users.php](https://github.com/LouisFontaine/manager.one/blob/master/apiPhp/api/users.php)
+
 
 ### Getting Started
 
