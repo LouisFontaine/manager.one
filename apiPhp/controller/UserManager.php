@@ -1,17 +1,17 @@
 <?php
 class UserManager
 {
-    // DB stuff
-    private $_conn;
-    private $table = 'users';
+  // DB stuff
+  private $_conn;
+  private $table = 'users';
 
-    // Constructor with DB
-    public function __construct($conn)
-    {
-        $this->set_conn($conn);
-    }
+  // Constructor with DB
+  public function __construct($conn)
+  {
+    $this->set_conn($conn);
+  }
 
-    // Get users
+  // Get users
   public function read()
   {
     $users = [];
@@ -23,7 +23,23 @@ class UserManager
       $users[] = new User($data);
     }
 
-    return $users;
+    for ($i = 0; $i < count($users); $i++) {
+      $users[$i] = $users[$i]->to_array();
+    }
+
+    // Get row count
+    $num = count($users);
+
+    // Check if any tasks
+    if ($num > 0) {
+      // Turn to JSON & output
+      echo json_encode($users);
+    } else {
+      // No users
+      echo json_encode(
+        array('message' => 'No users Found')
+      );
+    }
   }
 
   // Get Single users
@@ -31,17 +47,29 @@ class UserManager
   {
     $id = (int) $id;
 
-    // Create query
+    // get query
     $q = $this->_conn->query('SELECT * FROM ' . $this->table . ' WHERE id = ' . $id);
 
     $data = $q->fetch(PDO::FETCH_ASSOC);
 
-    return new User($data);
+    if ($data) {
+      echo (json_encode($data));
+    } else {
+      echo json_encode(
+        array('message' => 'User not found')
+      );
+    }
   }
 
   // Create user
-  public function create(User $user)
+  public function create()
   {
+    // Get raw posted data
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    $user = new User($data);
+
+    // Create user
     // Create query
     $query = 'INSERT INTO ' . $this->table . ' SET name = :name, email = :email';
 
@@ -54,13 +82,15 @@ class UserManager
 
     // Execute query
     if ($stmt->execute()) {
+      echo json_encode(
+        array('message' => 'user Created')
+      );
       return true;
+    } else {
+      echo json_encode(
+        array('message' => 'user Not Created')
+      );
     }
-
-    // Print error if something goes wrong
-    printf("Error: %s.\n", $stmt->error);
-
-    return false;
   }
 
   // Delete user
@@ -82,17 +112,22 @@ class UserManager
 
     // Execute query
     if ($stmt->execute()) {
+      echo json_encode(
+        array('message' => 'User deleted')
+      );
       return true;
     }
 
     // Print error if something goes wrong
     printf("Error: ", $stmt->error);
-
+    echo json_encode(
+      array('message' => 'User not deleted')
+    );
     return false;
   }
 
-    public function set_conn(PDO $conn)
-    {
-        $this->_conn = $conn;
-    }
+  public function set_conn(PDO $conn)
+  {
+    $this->_conn = $conn;
+  }
 }
