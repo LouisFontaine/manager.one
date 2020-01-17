@@ -3,7 +3,7 @@ class UserManager
 {
   // DB stuff
   private $_conn;
-  private $table = 'users';
+  const TABLE = "users";
 
   // Constructor with DB
   public function __construct($conn)
@@ -17,7 +17,7 @@ class UserManager
     $users = [];
 
     // Create query
-    $q = $this->_conn->query('SELECT * FROM ' . $this->table);
+    $q = $this->_conn->query('SELECT * FROM ' . UserManager::TABLE);
 
     while ($data = $q->fetch(PDO::FETCH_ASSOC)) {
       $users[] = new User($data);
@@ -45,12 +45,15 @@ class UserManager
   // Get Single users
   public function read_single($id)
   {
+    $id = htmlspecialchars(strip_tags($id));
     $id = (int) $id;
 
-    // get query
-    $q = $this->_conn->query('SELECT * FROM ' . $this->table . ' WHERE id = ' . $id);
+    $stmt = $this->_conn->prepare("SELECT * FROM " . UserManager::TABLE . " WHERE id = ?");
+    $stmt->execute([$id]);
 
-    $data = $q->fetch(PDO::FETCH_ASSOC);
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmt = null;
 
     if ($data) {
       echo (json_encode($data));
@@ -69,16 +72,15 @@ class UserManager
 
     $user = new User($data);
 
-    // Create user
     // Create query
-    $query = 'INSERT INTO ' . $this->table . ' SET name = :name, email = :email';
+    $query = 'INSERT INTO ' . UserManager::TABLE . ' SET name = :name, email = :email';
 
     // Prepare statement
     $stmt = $this->_conn->prepare($query);
 
     // Bind data
-    $stmt->bindValue(':name', $user->name());
-    $stmt->bindValue(':email', $user->email());
+    $stmt->bindValue(':name', htmlspecialchars(strip_tags($user->name())));
+    $stmt->bindValue(':email', htmlspecialchars(strip_tags($user->email())));
 
     // Execute query
     try {
@@ -97,16 +99,13 @@ class UserManager
     $id = (int) $id;
 
     // Create query
-    $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+    $query = 'DELETE FROM ' . UserManager::TABLE . ' WHERE id = :id';
 
     // Prepare Statement
     $stmt = $this->_conn->prepare($query);
 
-    // clean data
-    $id = htmlspecialchars(strip_tags($id));
-
     // Bind Data
-    $stmt->bindParam(':id', $id);
+    $stmt->bindValue(':id', htmlspecialchars(strip_tags($id)));
 
     // Execute query
     try {

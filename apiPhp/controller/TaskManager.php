@@ -3,7 +3,7 @@ class TaskManager
 {
   // DB stuff
   private $_conn;
-  private $table = 'tasks';
+  const TABLE = 'tasks';
 
   // Constructor with DB
   public function __construct($conn)
@@ -17,7 +17,7 @@ class TaskManager
     $tasks = [];
 
     // Create query
-    $q = $this->_conn->query('SELECT * FROM ' . $this->table);
+    $q = $this->_conn->query("SELECT * FROM " . TaskManager::TABLE);
 
     while ($data = $q->fetch(PDO::FETCH_ASSOC)) {
       $tasks[] = new Task($data);
@@ -45,12 +45,15 @@ class TaskManager
   // Get Single tasks
   public function read_single($id)
   {
+    $id = htmlspecialchars(strip_tags($id));
     $id = (int) $id;
 
-    // Create query
-    $q = $this->_conn->query('SELECT * FROM ' . $this->table . ' WHERE id = ' . $id);
+    $stmt = $this->_conn->prepare("SELECT * FROM " . TaskManager::TABLE . " WHERE id = ?");
+    $stmt->execute([$id]);
 
-    $data = $q->fetch(PDO::FETCH_ASSOC);
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmt = null;
 
     if ($data) {
       echo (json_encode($data));
@@ -65,10 +68,12 @@ class TaskManager
   public function read_tasks_of_user($id)
   {
     $tasks = [];
+
+    $id = htmlspecialchars(strip_tags($id));
     $id = (int) $id;
 
     // Create query
-    $q = $this->_conn->query('SELECT * FROM ' . $this->table . ' WHERE user_id = ' . $id);
+    $q = $this->_conn->query('SELECT * FROM ' . TaskManager::TABLE . ' WHERE user_id = ' . $id);
 
     while ($data = $q->fetch(PDO::FETCH_ASSOC)) {
       $tasks[] = new Task($data);
@@ -100,17 +105,19 @@ class TaskManager
     $task = new Task($data);
 
     // Create query
-    $query = 'INSERT INTO ' . $this->table . ' SET user_id = :user_id, title = :title, description = :description, creation_date = :creation_date, status =:status';
+    $query = 'INSERT INTO ' . TaskManager::TABLE . ' SET user_id = :user_id, title = :title, description = :description, creation_date = :creation_date, status =:status';
 
     // Prepare statement
     $stmt = $this->_conn->prepare($query);
 
+    
+
     // Bind data
-    $stmt->bindValue(':user_id', $task->user_id());
-    $stmt->bindValue(':title', $task->title());
-    $stmt->bindValue(':description', $task->description());
-    $stmt->bindValue(':creation_date', $task->creation_date());
-    $stmt->bindValue(':status', $task->status());
+    $stmt->bindValue(':user_id', htmlspecialchars(strip_tags($task->user_id())));
+    $stmt->bindValue(':title', htmlspecialchars(strip_tags($task->title())));
+    $stmt->bindValue(':description', htmlspecialchars(strip_tags($task->description())));
+    $stmt->bindValue(':creation_date', htmlspecialchars(strip_tags($task->creation_date())));
+    $stmt->bindValue(':status', htmlspecialchars(strip_tags($task->status())));
 
     // Execute query
     try {
@@ -129,16 +136,13 @@ class TaskManager
     $id = (int) $id;
 
     // Create query
-    $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+    $query = 'DELETE FROM ' . TaskManager::TABLE . ' WHERE id = :id';
 
     // Prepare Statement
     $stmt = $this->_conn->prepare($query);
 
-    // clean data
-    $id = htmlspecialchars(strip_tags($id));
-
     // Bind Data
-    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':id', htmlspecialchars(strip_tags($id)));
 
     // Execute query
     try {
