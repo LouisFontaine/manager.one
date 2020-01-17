@@ -34,11 +34,11 @@ class TaskManager
     if ($num > 0) {
       // Turn to JSON & output
       echo json_encode($tasks);
+      return true;
     } else {
       // No tasks
-      echo json_encode(
-        array('message' => 'No tasks Found')
-      );
+      httpStatusAnswer::send404status('API can t find any tasks in the database');
+      return false;
     }
   }
 
@@ -52,10 +52,13 @@ class TaskManager
 
     $data = $q->fetch(PDO::FETCH_ASSOC);
 
-    $task = new Task($data);
-
-    // Make JSON
-    echo (json_encode($task->to_array()));
+    if ($data) {
+      echo (json_encode($data));
+      return true;
+    } else {
+      httpStatusAnswer::send404status('API can t find this task');
+      return false;
+    }
   }
 
   // Get all tasks of a userID
@@ -72,18 +75,18 @@ class TaskManager
     }
 
     for ($i = 0; $i < count($tasks); $i++) {
-        $tasks[$i] = $tasks[$i]->to_array();
+      $tasks[$i] = $tasks[$i]->to_array();
     }
     // Get row count
     $num = count($tasks);
     if ($num > 0) {
-        // Turn to JSON & output
-        echo json_encode($tasks);
+      // Turn to JSON & output
+      echo json_encode($tasks);
+      return true;
     } else {
-        // No tasks
-        echo json_encode(
-            array('message' => 'No tasks Found')
-        );
+      // No tasks
+      httpStatusAnswer::send404status('API can t find any tasks for this userID in the database');
+      return false;
     }
   }
 
@@ -110,15 +113,12 @@ class TaskManager
     $stmt->bindValue(':status', $task->status());
 
     // Execute query
-    if ($stmt->execute()) {
-      echo json_encode(
-        array('message' => 'task Created')
-      );
+    try {
+      $stmt->execute();
+      httpStatusAnswer::send204status('The task was successfully created and added to the database');
       return true;
-    } else {
-      echo json_encode(
-        array('message' => 'task Not Created')
-      );
+    } catch (PDOException $e) {
+      httpStatusAnswer::send424status('The user wasn t created ' . $e->getMessage());
       return false;
     }
   }
@@ -141,15 +141,16 @@ class TaskManager
     $stmt->bindParam(':id', $id);
 
     // Execute query
-    if ($stmt->execute()) {
-      echo json_encode(
-        array('message' => 'Task deleted')
-      );
-      return true;
-    } else {
-      echo json_encode(
-        array('message' => 'Task not deleted')
-      );
+    try {
+      $stmt->execute();
+      if ($stmt->rowCount()) {
+        httpStatusAnswer::send204status('The task was successfully deleted from the database');
+        return true;
+      } else {
+        throw new Exception("No task witth this ID");
+      }
+    } catch (Exception $e) {
+      httpStatusAnswer::send424status('Task not deleted : ' . $e->getMessage());
       return false;
     }
   }

@@ -34,11 +34,11 @@ class UserManager
     if ($num > 0) {
       // Turn to JSON & output
       echo json_encode($users);
+      return true;
     } else {
       // No users
-      echo json_encode(
-        array('message' => 'No users Found')
-      );
+      httpStatusAnswer::send404status('API can t find any user in the database');
+      return false;
     }
   }
 
@@ -54,10 +54,10 @@ class UserManager
 
     if ($data) {
       echo (json_encode($data));
+      return true;
     } else {
-      echo json_encode(
-        array('message' => 'User not found')
-      );
+      httpStatusAnswer::send404status('API can t find this user');
+      return false;
     }
   }
 
@@ -81,15 +81,13 @@ class UserManager
     $stmt->bindValue(':email', $user->email());
 
     // Execute query
-    if ($stmt->execute()) {
-      echo json_encode(
-        array('message' => 'user Created')
-      );
+    try {
+      $stmt->execute();
+      httpStatusAnswer::send204status('The user was successfully created and added to the database');
       return true;
-    } else {
-      echo json_encode(
-        array('message' => 'user Not Created')
-      );
+    } catch (Exception $e) {
+      httpStatusAnswer::send424status('The user wasn t created : ' . $e->getMessage());
+      return false;
     }
   }
 
@@ -111,19 +109,18 @@ class UserManager
     $stmt->bindParam(':id', $id);
 
     // Execute query
-    if ($stmt->execute()) {
-      echo json_encode(
-        array('message' => 'User deleted')
-      );
-      return true;
+    try {
+      $stmt->execute();
+      if ($stmt->rowCount()) {
+        httpStatusAnswer::send204status('The user was successfully deleted from the database');
+        return true;
+      } else {
+        throw new Exception("No user witth this ID");
+      }
+    } catch (Exception $e) {
+      httpStatusAnswer::send424status('User not deleted : ' . $e->getMessage());
+      return false;
     }
-
-    // Print error if something goes wrong
-    printf("Error: ", $stmt->error);
-    echo json_encode(
-      array('message' => 'User not deleted')
-    );
-    return false;
   }
 
   public function set_conn(PDO $conn)

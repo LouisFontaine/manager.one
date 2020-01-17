@@ -18,6 +18,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 include_once __DIR__ . '/../models/Task.php';
 include_once __DIR__ . '/../controller/TaskManager.php';
+require_once __DIR__ . '/../core/httpStatusAnswer.php';
 
 // Instantiate connect
 $database = new Database();
@@ -30,21 +31,31 @@ if ($url == '/manager.one/apiPhp/tasks' && $_SERVER['REQUEST_METHOD'] == 'GET') 
 }
 
 // POST    http://localhost/manager.one/apiPhp/tasks
-if ($url == '/manager.one/apiPhp/tasks' && $_SERVER['REQUEST_METHOD'] == 'POST') {
+else if ($url == '/manager.one/apiPhp/tasks' && $_SERVER['REQUEST_METHOD'] == 'POST') {
     $taskManager->create();
 }
 
 // GET     http://localhost/manager.one/apiPhp/tasks/{taskID}
-if (preg_match("/manager.one\/apiPhp\/tasks\/([0-9]+)/", $url, $matches) && $_SERVER['REQUEST_METHOD'] == 'GET') {
+else if (preg_match("/manager.one\/apiPhp\/tasks\/([0-9]+)/", $url, $matches) && $_SERVER['REQUEST_METHOD'] == 'GET') {
     $taskManager->read_single($matches[1]);
 }
 
 // DELETE  http://localhost/manager.one/apiPhp/tasks/{taskID}
-if (preg_match("/manager.one\/apiPhp\/tasks\/([0-9]+)/", $url, $matches) && $_SERVER['REQUEST_METHOD'] == 'DELETE') {
+else if (preg_match("/manager.one\/apiPhp\/tasks\/([0-9]+)/", $url, $matches) && $_SERVER['REQUEST_METHOD'] == 'DELETE') {
     $taskManager->delete($matches[1]);
 }
 
 // GET  http://localhost/manager.one/apiPhp/users/{userID}/tasks
-if (preg_match ("/manager.one\/apiPhp\/users\/([0-9]+)\/tasks/", $url, $matches) && $_SERVER['REQUEST_METHOD'] == 'GET') {
+else if (preg_match("/manager.one\/apiPhp\/users\/([0-9]+)\/tasks/", $url, $matches) && $_SERVER['REQUEST_METHOD'] == 'GET') {
     $tasks = $taskManager->read_tasks_of_user($matches[1]);
+}
+
+// If routes doesnt handle methods type
+else if ($url == '/manager.one/apiPhp/tasks' || preg_match("/manager.one\/apiPhp\/tasks\/([0-9]+)/", $url, $matches) || preg_match("/manager.one\/apiPhp\/users\/([0-9]+)\/tasks/", $url, $matches)) {
+    httpStatusAnswer::send405status('Method is not allowed or not handled by the API');
+}
+
+// If route not found return error 404
+else {
+    httpStatusAnswer::send404status('API can t map the client s URI to a resource');
 }
