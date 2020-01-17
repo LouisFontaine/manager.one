@@ -2,12 +2,13 @@
 
 Manager.one is a project carried out during a technical test in order to integrate the development team of manager.one
 
+
 ### Update V2
 
 * Creation of Rooter class
 * Creation of roots file which store all the routes
 * New implementation of response to API call in [tasks.php](https://github.com/LouisFontaine/manager.one/blob/master/apiPhp/api/tasks.php) and [users.php](https://github.com/LouisFontaine/manager.one/blob/master/apiPhp/api/users.php)
-
+* Return respons depending of the execution and acording to the RFC 7807 standard with status and description (204, 404, 405, 424) see [httpStatusAnswer](https://github.com/LouisFontaine/manager.one/blob/master/apiPhp/core/httpStatusAnswer.php) class
 
 ### Getting Started
 
@@ -95,7 +96,7 @@ On this page, you can :
 * See the differents users with their informations
 * Add a new user (by cliking on "Create" button)
 * Delete a user (by cliking on "Delete" button)
-* See the different ttasks of a user (by cliking on "Tasks" button)
+* See the different ttasks of a user (by cliking on "Tasks" button) 
 
 See screen [UsersAdministrationScreen.PNG](https://github.com/LouisFontaine/manager.one/blob/master/UsersAdministrationScreen.PNG)
 
