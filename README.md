@@ -96,7 +96,7 @@ On this page, you can :
 * See the differents users with their informations
 * Add a new user (by cliking on "Create" button)
 * Delete a user (by cliking on "Delete" button)
-* See the different ttasks of a user (by cliking on "Tasks" button)
+* See the different ttasks of a user (by cliking on "Tasks" button) 
 
 See screen [UsersAdministrationScreen.PNG](https://github.com/LouisFontaine/manager.one/blob/master/UsersAdministrationScreen.PNG)
 
