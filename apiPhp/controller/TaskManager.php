@@ -133,8 +133,6 @@ class TaskManager
   // Delete tasks
   public function delete($id)
   {
-    $id = (int) $id;
-
     // Create query
     $query = 'DELETE FROM ' . TaskManager::TABLE . ' WHERE id = :id';
 
@@ -142,7 +140,7 @@ class TaskManager
     $stmt = $this->_conn->prepare($query);
 
     // Bind Data
-    $stmt->bindParam(':id', htmlspecialchars(strip_tags($id)));
+    $stmt->bindValue(':id', htmlspecialchars(strip_tags($id)));
 
     // Execute query
     try {
